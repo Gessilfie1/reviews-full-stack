@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>A Category</title>
+</head>
+<body>
+
+	<header>
+		<h1>A Single Category</h1>
+	</header>
+	
+		<h2>th:text = "${category.name}"</h2>
+	
+	<div th:each = "review: ${category.reviews}">
+	<h3>th:text = "${review.title}"</h3>
+						
+	</div>	
+	
+
+</body>
+</html>
