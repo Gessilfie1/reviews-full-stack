@@ -58,7 +58,7 @@ public class JPAMappingsTest {
 	
 	@Test
 	public void shouldSaveAndLoadReview() {
-		Review review = new Review("review title", "review content");
+		Review review = new Review("review title", "review content","image url");
 		review = reviewRepo.save(review);
 		long reviewId = review.getId();
 		
@@ -76,7 +76,7 @@ public class JPAMappingsTest {
 		Category drama = categoryRepo.save(new Category("Drama"));
 		Category comedy = categoryRepo.save(new Category("Comedy"));
 		
-		Review review = new Review("Forrest Gump", "review content", drama, comedy);
+		Review review = new Review("Forrest Gump", "review content","image url", drama, comedy);
 		review = reviewRepo.save(review);
 		long reviewId = review.getId();
 		
@@ -93,8 +93,8 @@ public class JPAMappingsTest {
 	public void shouldFindReviewsForCategory() {
 		Category comedy = categoryRepo.save(new Category("comedy"));
 		
-		Review forrestGump = reviewRepo.save(new Review("Forrest Gump", "review content", comedy));
-		Review toyStory = reviewRepo.save(new Review("Toy Story", "review content", comedy));
+		Review forrestGump = reviewRepo.save(new Review("Forrest Gump", "review content","image url", comedy));
+		Review toyStory = reviewRepo.save(new Review("Toy Story", "review content","image url", comedy));
 		
 		entityManager.flush(); 
 		entityManager.clear();
@@ -109,8 +109,8 @@ public class JPAMappingsTest {
 		Category drama = categoryRepo.save(new Category("Drama"));
 		long categoryId = drama.getId();
 		
-		Review forrestGump = reviewRepo.save(new Review("Forrest Gump", "review content", drama));
-		Review unbreakable = reviewRepo.save(new Review("Unbreakable", "review content", drama));
+		Review forrestGump = reviewRepo.save(new Review("Forrest Gump", "review content","image url", drama));
+		Review unbreakable = reviewRepo.save(new Review("Unbreakable", "review content","image url", drama));
 		
 		entityManager.flush(); 
 		entityManager.clear();

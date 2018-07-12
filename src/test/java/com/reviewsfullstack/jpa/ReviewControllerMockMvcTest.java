@@ -74,7 +74,7 @@ public class ReviewControllerMockMvcTest {
 	public void shouldPutSingleReviewIntoModel() throws Exception{
 		when(reviewRepo.findById(1L)).thenReturn(Optional.of(review));
 		
-		mvc.perform(get("/review?id=1")).andExpect(model().attribute("reviews", is(review)));
+		mvc.perform(get("/review?id=1")).andExpect(model().attribute("review", is(review)));
 	}
 	
 	@Test
@@ -101,5 +101,45 @@ public class ReviewControllerMockMvcTest {
 		when(categoryRepo.findById(arbitraryCategoryId)).thenReturn(Optional.of(category));
 		mvc.perform(get("/category?id=12")).andExpect(view().name(is("category")));
 	}
+	
+	@Test
+	public void shouldBeOkForSingleCategory() throws Exception {
+		long arbitraryCategoryId = 12;
+		when(categoryRepo.findById(arbitraryCategoryId)).thenReturn(Optional.of(category));
+		mvc.perform(get("/category?id=12")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void shouldNotBeOkForSingleCategory() throws Exception {
+		
+		mvc.perform(get("/category?id=12")).andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void shouldPutSingleCategoryIntoModel() throws Exception {
+		when(categoryRepo.findById(1L)).thenReturn(Optional.of(category));
+		
+		mvc.perform(get("/category?id=1")).andExpect(model().attribute("category", is(category)));
+	}
+	
+	@Test
+	public void shouldRouteToAllCategoriesView() throws Exception {
+		mvc.perform(get("/categories")).andExpect(view().name(is("categories")));
+	}
+	
+	@Test
+	public void shouldBeOkForAllCategories() throws Exception {
+		mvc.perform(get("/categories")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void shouldPutAllCategoriesIntoModel() throws Exception {
+		Collection <Category> allCategories = Arrays.asList(category, anotherCategory);
+		when(categoryRepo.findAll()).thenReturn(allCategories);
+		
+		mvc.perform(get("/categories")).andExpect(model().attribute("categories", is(allCategories)));
+	}
+	
+	
 }
 	

@@ -25,7 +25,7 @@ public class ReviewController {
 		Optional<Review> review = reviewRepo.findById(id);
 		
 		if(review.isPresent()) {
-			model.addAttribute("reviews", review.get());
+			model.addAttribute("review", review.get());
 			return "review";
 		}
 		throw new ReviewNotFoundException();

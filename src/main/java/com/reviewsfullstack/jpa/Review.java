@@ -18,19 +18,23 @@ public class Review {
 
 	private String title;
 	private String content;
+	private String imageUrl;
 	
 	//owning side of relationship does not need mapped by
 	@ManyToMany
 	private Collection<Category> categories;
+
+	
 	
 	//default no args constructor required by jpa
 	public Review() {
 		
 	}
 
-	public Review(String title, String content, Category...categories) {
+	public Review(String title, String content, String imageUrl, Category...categories) {
 		this.title = title;
 		this.content = content;
+		this.imageUrl = imageUrl;
 		//use HashSet to avoid duplicates
 		this.categories = new HashSet<>(Arrays.asList(categories));
 	}
@@ -45,6 +49,10 @@ public class Review {
 	
 	public String getContent() {
 		return content;
+	}
+	
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
 	public Collection<Category> getCategories() {		

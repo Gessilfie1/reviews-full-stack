@@ -62,7 +62,7 @@ public class ReviewControllerTest {
 		when(reviewRepo.findById(arbitraryReviewId)).thenReturn(Optional.of(review));
 		
 		underTest.findOneReview(arbitraryReviewId, model);
-		verify(model).addAttribute("reviews", review);	
+		verify(model).addAttribute("review", review);	
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class ReviewControllerTest {
 		when(categoryRepo.findById(arbitraryCategoryId)).thenReturn(Optional.of(category));
 		
 		underTest.findOneCategory(arbitraryCategoryId, model);
-		verify(model).addAttribute("categories", category);		
+		verify(model).addAttribute("category", category);		
 	}
 	
 	@Test
