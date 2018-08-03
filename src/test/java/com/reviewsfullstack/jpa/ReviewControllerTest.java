@@ -94,5 +94,19 @@ public class ReviewControllerTest {
 		verify(model).addAttribute("categories", allCategories);
 	}
 	
+	@Test
+	public void shouldAddAdditionalReviewsToModel() {
+		String categoryName = "category name";
+		Category newCategory = categoryRepo.findByName(categoryName);
+		
+		String reviewTitle= "new review";
+		String reviewContent = "new review content";
+		String imageUrl = "new review image";
+		underTest.addReview(reviewTitle, reviewContent, imageUrl, categoryName);
+		Review newReview = new Review(reviewTitle, reviewContent, imageUrl, newCategory);
+		when(reviewRepo.save(newReview)).thenReturn(newReview);
+		
+	}
+	
 
 }
