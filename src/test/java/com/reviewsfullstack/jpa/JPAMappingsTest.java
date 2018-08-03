@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import javax.annotation.Resource;
+import javax.swing.text.html.HTML.Tag;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,8 @@ public class JPAMappingsTest {
 	@Resource
 	private ReviewRepository reviewRepo;
 	
+	@Resource
+	private RTagRepository rTagRepo;	
 	
 	
 	
@@ -119,6 +122,40 @@ public class JPAMappingsTest {
 		assertThat(reviewsForCategory, containsInAnyOrder(forrestGump, unbreakable));		
 		
 	}
+	
+	@Test
+	public void shouldSaveAndLoadReviewTag() {
+		
+		RTag tag = rTagRepo.save(new RTag("tagName"));
+		long tagId = tag.getId();
+		
+		entityManager.flush(); 
+		entityManager.clear();
+		
+		Optional<RTag> result = rTagRepo.findById(tagId);
+		tag = result.get();
+		assertThat(tag.getName(), is ("tagName"));		
+	}
+	
+	@Test
+	public void shouldGenerateReviewTagId() {
+		RTag tag = rTagRepo.save(new RTag("tagName"));
+		long tagId = tag.getId();
+		
+		entityManager.flush(); 
+		entityManager.clear();
+		
+		assertThat(tagId, is(greaterThan(0L)));
+	}		
+		
+		
+		
+
+	
+
+	
+	
+
 	
 	
 

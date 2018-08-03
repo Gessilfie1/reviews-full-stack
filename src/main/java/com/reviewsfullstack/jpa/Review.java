@@ -23,6 +23,9 @@ public class Review {
 	//owning side of relationship does not need mapped by
 	@ManyToMany
 	private Collection<Category> categories;
+	
+	@ManyToMany
+	private Collection<RTag> tags;
 
 	
 	
@@ -37,7 +40,9 @@ public class Review {
 		this.imageUrl = imageUrl;
 		//use HashSet to avoid duplicates
 		this.categories = new HashSet<>(Arrays.asList(categories));
+		
 	}
+
 
 	public long getId() {	
 		return id;
