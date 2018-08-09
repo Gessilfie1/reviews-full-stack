@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 
@@ -97,15 +98,16 @@ public class ReviewControllerTest {
 	@Test
 	public void shouldAddAdditionalReviewsToModel() {
 		String categoryName = "category name";
-		Category newCategory = categoryRepo.findByName(categoryName);
+		when(categoryRepo.findByName(categoryName)).thenReturn(Optional.of(category));
+		//Category newCategory = categoryRepo.findByName(categoryName).get();
 		
 		String reviewTitle= "new review";
 		String reviewContent = "new review content";
 		String imageUrl = "new review image";
 		underTest.addReview(reviewTitle, reviewContent, imageUrl, categoryName);
-		Review newReview = new Review(reviewTitle, reviewContent, imageUrl, newCategory);
-		when(reviewRepo.save(newReview)).thenReturn(newReview);
-		
+		//Review newReview = new Review(reviewTitle, reviewContent, imageUrl, newCategory);
+		//when(reviewRepo.save(newReview)).thenReturn(newReview);
+		verify(reviewRepo).save(Mockito.any(Review.class));
 	}
 	
 

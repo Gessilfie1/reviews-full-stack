@@ -61,21 +61,22 @@ public class ReviewController {
 	
 	
 	@RequestMapping("/add-review")
-	public String addReview(String reviewTitle, String reviewContent, String imageUrl, String categoryName) {
-		Category category = categoryRepo.findByName(categoryName);
+	public String addReview(String reviewTitle, String reviewContent, String imageUrl, String categoryName) {		
+		Category category;
+		Optional<Category> categoryOpt = categoryRepo.findByName(categoryName);
+		
 		//if category does not exist in database. Add it to database
-		if(category == null) {
-			category = new Category(categoryName);
-			categoryRepo.save(category);
+		if(!categoryOpt.isPresent()) {
+			category = categoryRepo.save(new Category(categoryName));
 		}
-		Review newReview = reviewRepo.findByName(reviewTitle);
+		else category = categoryOpt.get();
 		
-		if(newReview==null) {
-			newReview = new Review(reviewTitle, reviewContent, imageUrl, category);
-			reviewRepo.save(newReview);
-		}
+		Review newReview = new Review(reviewTitle, reviewContent, imageUrl, category);
+		reviewRepo.save(newReview);
+		
 		return "redirect:/show-reviews";
-		
 	}
+	
+	
 
 }

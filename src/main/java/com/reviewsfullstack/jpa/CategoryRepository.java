@@ -1,9 +1,11 @@
 package com.reviewsfullstack.jpa;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 
-	Category findByName(String categoryName);
+	Optional<Category> findByName(String categoryName);
 
 }

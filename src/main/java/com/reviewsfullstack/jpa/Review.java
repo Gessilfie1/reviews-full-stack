@@ -8,10 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Review {
-	
+
 	@Id
 	@GeneratedValue
 	private long id;
@@ -19,49 +22,61 @@ public class Review {
 	private String title;
 	private String content;
 	private String imageUrl;
-	
-	//owning side of relationship does not need mapped by
+
+	// owning side of relationship does not need mapped by
 	@ManyToMany
 	private Collection<Category> categories;
-	
+
 	@ManyToMany
 	private Collection<RTag> tags;
 
-	
-	
-	//default no args constructor required by jpa
+	@JsonIgnore
+	@OneToMany(mappedBy = "review")
+	private Collection<Comment> comments;
+
+	// default no args constructor required by jpa
 	public Review() {
-		
+
 	}
 
-	public Review(String title, String content, String imageUrl, Category...categories) {
+	public Review(String title, String content, String imageUrl, Category categories, RTag... tags) {
 		this.title = title;
 		this.content = content;
 		this.imageUrl = imageUrl;
-		//use HashSet to avoid duplicates
+		// use HashSet to avoid duplicates
 		this.categories = new HashSet<>(Arrays.asList(categories));
-		
+		this.tags = new HashSet<>(Arrays.asList(tags));
 	}
+	
+	public void setComments(Comment...comments) {
+		this.comments = new HashSet<>(Arrays.asList(comments));
+	}
+	
+	//new constructor with Tags?
 
-
-	public long getId() {	
+	public long getId() {
 		return id;
 	}
 
-	public String getTitle() {		
+	public String getTitle() {
 		return title;
 	}
-	
+
 	public String getContent() {
 		return content;
 	}
-	
+
 	public String getImageUrl() {
 		return imageUrl;
 	}
 
-	public Collection<Category> getCategories() {		
+	public Collection<Category> getCategories() {
 		return categories;
+	}
+
+	public Collection<Comment> getComments() {
+
+		return comments;
 	}
 
 	@Override
@@ -85,7 +100,5 @@ public class Review {
 			return false;
 		return true;
 	}
-	
-	
 
 }

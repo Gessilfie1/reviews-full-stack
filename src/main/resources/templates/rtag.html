@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Year</title>
+
+
+</head>
+
+<body>
+
+	<header>
+		<h1>Reviews</h1>
+	</header>
+
+	<main>
+	<div th:each="tag: ${tags}">
+		<h2 th:text="'Reviews with tag: ' + ${tag.name}"></h2>
+		<section id="reviewList">
+			<div th:each="city: ${tag.reivews}">
+				<a th:href="@{/review(id=${review.id})}">
+					<h3 th:text="${review.reviewTitle} + ', ' + ${review.categoryName}"></h3>
+					<img th:src="@{'/images/' + ${review.imageUrl}}"> <span
+					class="goTo480">Go to Review</span>
+				</a>
+			</div>
+		</section>
+
+		<a href="http://localhost:8080/reviews">Back to home</a>
+
+	</div>
+	</main>
+	<footer> </footer>
+
+</body>
+
+</html>

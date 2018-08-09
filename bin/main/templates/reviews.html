@@ -18,6 +18,28 @@
 	<img th:src="@{${review.imageUrl}}">
 	</li>
 	</div>
+	
+	<form method="post">
+	<div>
+	<label>Enter Review Title:</label>
+	<input type="text" name="reviewTitle"/>	
+	</div>
+	
+	<div>
+	<label>Enter Review Content:</label>
+	<input type="text" name="reviewContent"/>	
+	</div>
+	
+	<div>
+	<label>Enter Category:</label>
+	<input type="text" name="categoryName"/>	
+	</div>
+	
+	<div>
+	<button> th:formaction="@{add-review}" add review</button>
+	</div>
+	
+	</form>	
 
 </main>
 

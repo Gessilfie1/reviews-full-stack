@@ -31,7 +31,10 @@ public class JPAMappingsTest {
 	private ReviewRepository reviewRepo;
 	
 	@Resource
-	private RTagRepository rTagRepo;	
+	private RTagRepository rTagRepo;
+	
+	@Resource
+	private CommentRepository commentRepo;
 	
 	
 	
@@ -61,7 +64,7 @@ public class JPAMappingsTest {
 	
 	@Test
 	public void shouldSaveAndLoadReview() {
-		Review review = new Review("review title", "review content","image url");
+		Review review = new Review("review title", "review content","image url", null);
 		review = reviewRepo.save(review);
 		long reviewId = review.getId();
 		
@@ -77,9 +80,9 @@ public class JPAMappingsTest {
 	public void shouldEstablishReviewtoCategoryRelationships() {
 		
 		Category drama = categoryRepo.save(new Category("Drama"));
-		Category comedy = categoryRepo.save(new Category("Comedy"));
 		
-		Review review = new Review("Forrest Gump", "review content","image url", drama, comedy);
+		
+		Review review = new Review("Forrest Gump", "review content","image url", drama);
 		review = reviewRepo.save(review);
 		long reviewId = review.getId();
 		
@@ -89,7 +92,7 @@ public class JPAMappingsTest {
 		Optional<Review> result = reviewRepo.findById(reviewId);
 		review = result.get();
 		
-		assertThat(review.getCategories(), containsInAnyOrder(drama, comedy));
+		assertThat(review.getCategories(), containsInAnyOrder(drama));
 	}
 	
 	@Test
@@ -119,7 +122,7 @@ public class JPAMappingsTest {
 		entityManager.clear();
 		
 		Collection<Review> reviewsForCategory = reviewRepo.findByCategoriesId(categoryId);
-		assertThat(reviewsForCategory, containsInAnyOrder(forrestGump, unbreakable));		
+		assertThat(reviewsForCategory, containsInAnyOrder(forrestGump, unbreakable));	
 		
 	}
 	
@@ -146,7 +149,64 @@ public class JPAMappingsTest {
 		entityManager.clear();
 		
 		assertThat(tagId, is(greaterThan(0L)));
-	}		
+	}	
+	
+	@Test
+	public void shouldFindReviewsForTags() {
+		RTag tag1 = rTagRepo.save(new RTag("tag1"));		
+		Category drama = categoryRepo.save(new Category("Drama"));
+		
+		Review forrestGump = reviewRepo.save(new Review("Forrest Gump", "review content","image url", drama, tag1));
+		Review unbreakable = reviewRepo.save(new Review("Unbreakable", "review content","image url", drama, tag1));
+		
+		entityManager.flush(); 
+		entityManager.clear();
+
+//		tag1 = rTagRepo.findById(tag1.getId()).get();		
+//		forrestGump = reviewRepo.findById(forrestGump.getId()).get();
+//		unbreakable = reviewRepo.findById(unbreakable.getId()).get();		
+		
+		Collection<Review> reviewsForTag = reviewRepo.findByTagsContains(tag1);
+		assertThat(reviewsForTag, containsInAnyOrder(forrestGump, unbreakable));
+	}
+	
+	@Test
+	public void shouldSaveAndLoadComment() {
+		Comment comment = commentRepo.save(new Comment("example"));
+		long commentId = comment.getId();
+		
+		entityManager.flush(); 
+		entityManager.clear();
+		
+		Optional<Comment> result = commentRepo.findById(commentId);
+		comment = result.get();
+		assertThat(comment.getCommentText(), is("example"));
+	}
+	
+	@Test
+	public void shouldEstablishCommentToReviewRelationship() {
+		
+		Category drama = categoryRepo.save(new Category("Drama"));
+		
+		Review review = new Review("Forrest Gump", "review content","image url", drama);
+		
+		Comment comment1 = commentRepo.save(new Comment("example"));
+		Comment comment2 = commentRepo.save(new Comment("example2"));
+		review.setComments(comment1, comment2);
+		
+		review = reviewRepo.save(review);
+		long reviewId = review.getId();
+
+		entityManager.flush(); 
+		entityManager.clear();
+		
+//		Optional<Review> result = reviewRepo.findById(reviewId);
+//		review = result.get();
+//
+//		comment1 = commentRepo.findById(comment1.getId()).get();
+//		comment2 = commentRepo.findById(comment2.getId()).get();		
+		assertThat(review.getComments(), containsInAnyOrder(comment1, comment2));		
+	}
 		
 		
 		

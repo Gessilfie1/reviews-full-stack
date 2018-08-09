@@ -10,6 +10,8 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
 	
 	Collection<Review> findByCategoriesId(Long id);
 
-	Review findByName(String reviewName);
+	Collection<Review> findByTagsContains(RTag tag);
+
+//	Review findByName(String reviewName);
 
 }
